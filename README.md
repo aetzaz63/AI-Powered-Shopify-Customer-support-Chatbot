@@ -40,4 +40,9 @@ Google Gemini
 Workflow Image: 
 <img width="1238" height="435" alt="image" src="https://github.com/user-attachments/assets/da873fa0-a38b-47a6-b262-32757d487566" />
 
+Here are the Shopify chatbot Images: 
+<img width="1364" height="689" alt="image" src="https://github.com/user-attachments/assets/a82ad73c-23be-4deb-b59e-958f7006585e" />
+
+<img width="1364" height="692" alt="image" src="https://github.com/user-attachments/assets/72fd3aff-8cd5-4f68-9a7e-b9417f535160" />
+
 
