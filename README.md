@@ -1,17 +1,13 @@
 # AI-Powered-Shopify-Customer-support-Chatbot
 This project contains an n8n workflow that integrates seamlessly with Shopify to handle customer support tasks automatically. It responds to user messages, fetches live data from Shopify, and provides accurate answers inside your store’s chat widget. The workflow is fully functional.
 
-eatures
+Features
 
 Real-time Shopify Order Lookup
-
-Customer information retrieval
 
 Product search and details
 
 Automated replies using Google Gemini
-
-Editable store configuration (email, return policy, shipping info)
 
 Clean and reliable workflow structure
 
@@ -38,7 +34,8 @@ Shopify Admin API
 Google Gemini
 
 Workflow Image: 
-<img width="1238" height="435" alt="image" src="https://github.com/user-attachments/assets/da873fa0-a38b-47a6-b262-32757d487566" />
+<img width="1227" height="444" alt="image" src="https://github.com/user-attachments/assets/f413f96d-7b1e-4b53-9df7-1b51d5713420" />
+
 
 Here are the Shopify chatbot Images: 
 <img width="1364" height="689" alt="image" src="https://github.com/user-attachments/assets/a82ad73c-23be-4deb-b59e-958f7006585e" />
