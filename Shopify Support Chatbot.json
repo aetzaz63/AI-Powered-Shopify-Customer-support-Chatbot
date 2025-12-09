@@ -1,0 +1,222 @@
+{
+  "name": "Chatbot1",
+  "nodes": [
+    {
+      "parameters": {
+        "public": true,
+        "mode": "webhook",
+        "options": {}
+      },
+      "id": "a8a8db12-808e-45b5-8917-56538a9b8002",
+      "name": "Chat Trigger",
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        -400,
+        16
+      ],
+      "webhookId": "c8ed87ad-8533-4cf7-b653-546846606469"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.chatInput }}",
+        "options": {
+          "systemMessage": "You are a helpful customer support assistant for Samaha Store\n\nYour role is to:\n- Answer customer questions about products, orders, shipping, and returns\n- Track order status and provide tracking information using the Shopify Order Search tool\n- Provide detailed order information including payment status, shipping address, line items, and fulfillment details\n- Provide product details using the Shopify Product Lookup tool\n- Assist with return requests and provide return policy information\n- Be friendly, professional, and empathetic\n\nImportant guidelines:\n- Always verify order numbers before providing sensitive information\n- When customers ask about order status or tracking, use the Shopify Order Search tool with the order number\n- The order search returns complete information including order ID, tracking numbers, carrier details, and shipment status in the fulfillments array\n- Present order information clearly: order status, payment status, shipping address, items ordered, and tracking details\n- If tracking information is not yet available in the fulfillments, explain that the order is being prepared for shipment\n- If the order search returns no results, politely inform the customer that the order number could not be found and ask them to:\n  1) Double-check the order number\n  2) Check their email confirmation for the correct order number\n  3) Contact support at fahaad@gmail.com if they need further assistance\n- If you cannot resolve an issue, offer to escalate to fahaad@gmail.com\n- Use the available Shopify tools to fetch real-time data when customers ask about orders, products, or their account\n\nWhen the user asks about an order, ALWAYS:\n1) Ask for the order number if not provided\n2) Call the Shopify Order Search tool with the order number (with or without the # symbol)\n3) If the search succeeds, extract all order details including tracking information from the fulfillments array\n4) If the search returns no results, inform the customer politely that the order was not found\n5) Present the information in a clear, organized format including:\n   - Order number and status\n   - Payment status\n   - Items ordered with quantities\n   - Shipping address\n   - Tracking number(s) and carrier if available\n   - Estimated delivery if available\n\nProvide clear, concise, and helpful responses."
+        }
+      },
+      "id": "dcf856b5-49b7-4000-bd3a-d8441b7be68f",
+      "name": "Customer Support Agent",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3,
+      "position": [
+        -48,
+        16
+      ]
+    },
+    {
+      "parameters": {
+        "contextWindowLength": 10
+      },
+      "id": "c1dee969-9970-4959-9530-3d2894bce25e",
+      "name": "Conversation Memory",
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        -48,
+        272
+      ]
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Use this tool to search for products by name or get product details. Provide a product name or search term, and I will find matching products in the store.",
+        "authentication": "accessToken",
+        "resource": "product",
+        "operation": "getAll",
+        "returnAll": true,
+        "additionalFields": {}
+      },
+      "id": "79d9a2c7-98f3-4b1f-8d60-0fd94a786467",
+      "name": "Shopify Product Lookup",
+      "type": "n8n-nodes-base.shopifyTool",
+      "typeVersion": 1,
+      "position": [
+        144,
+        256
+      ],
+      "credentials": {
+        "shopifyAccessTokenApi": {
+          "id": "8e14pSwIyr3VG9Ds",
+          "name": "Shopify Access Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "id-1",
+              "name": "reply",
+              "value": "={{ $json.output || $json.text || $json.data?.[0]?.response }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "id": "aa371dd1-1c80-4884-ad85-169bc0e1e560",
+      "name": "Format Reply",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        416,
+        16
+      ]
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Use this tool to search for orders by order number or name. Provide the order number (like #1281 or 1281) and this will find the matching order with complete details including order ID, status, payment info, shipping address, line items, and tracking information.",
+        "authentication": "accessToken",
+        "operation": "getAll",
+        "options": {}
+      },
+      "id": "81c03748-b508-4706-8ed1-b86e7db120e5",
+      "name": "Shopify Order Search",
+      "type": "n8n-nodes-base.shopifyTool",
+      "typeVersion": 1,
+      "position": [
+        320,
+        240
+      ],
+      "credentials": {
+        "shopifyAccessTokenApi": {
+          "id": "8e14pSwIyr3VG9Ds",
+          "name": "Shopify Access Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -192,
+        224
+      ],
+      "id": "d3b7f968-bcf9-493f-bd3c-3222e29b754f",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "YLKs49oR8YysHCoX",
+          "name": "Google Gemini(PaLM) Api account 2"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Chat Trigger": {
+      "main": [
+        [
+          {
+            "node": "Customer Support Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Conversation Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "Customer Support Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Shopify Product Lookup": {
+      "ai_tool": [
+        [
+          {
+            "node": "Customer Support Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Customer Support Agent": {
+      "main": [
+        [
+          {
+            "node": "Format Reply",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Shopify Order Search": {
+      "ai_tool": [
+        [
+          {
+            "node": "Customer Support Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Customer Support Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "b6104682-f203-4e15-8dfa-7502b414e8d4",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "5f4ab72773364229c4f2ab349df0a073f82cfbb88cf48c54cb8a8ab0fb734c7c"
+  },
+  "id": "GrijbBBHqaJAiQmf",
+  "tags": []
+}
