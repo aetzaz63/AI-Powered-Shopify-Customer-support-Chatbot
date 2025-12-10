@@ -33,8 +33,11 @@ Shopify Admin API
 
 Google Gemini
 
-Workflow Image: 
+Workflow Images: 
 <img width="1227" height="444" alt="image" src="https://github.com/user-attachments/assets/f413f96d-7b1e-4b53-9df7-1b51d5713420" />
+
+<img width="1208" height="386" alt="image" src="https://github.com/user-attachments/assets/49abdc33-d382-4e97-ad52-aea8d221af33" />
+
 
 
 Here are the Shopify chatbot Images: 
